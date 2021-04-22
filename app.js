@@ -1,10 +1,23 @@
-const express = require('express')
-const https = require('https')
-const MongoClient = require('mongodb').MongoClient
-const app = express()
-const port = 8080
-const apiKey = "2bbb7474e93316b574e7da337783076d"
+const express = require('express');
+const https = require('https');
+const MongoClient = require('mongodb').MongoClient;
+const app = express();
+const port = process.env.PORT || 5000;
+const apiKey = "2bbb7474e93316b574e7da337783076d";
 var db = null;
+const path = require('path');
+
+
+app.use(express.static('public'));
+
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname + '/index.html'));
+});
+
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/index.html');
+});
+
 
 MongoClient.connect('mongodb://localhost:27017/', (err, client) => {
     if (err) throw err
@@ -12,12 +25,13 @@ MongoClient.connect('mongodb://localhost:27017/', (err, client) => {
     db = client.db('db');
     app.listen(port)
 })
-
-app.use('/', express.static(__dirname + '/'));
+/* app.use('/', express.static(__dirname + '/'));
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
+
+ */
 
 app.get('/weather/coordinates', (req, res) => {
     if (!Object.keys(req.query).includes('lat') || !Object.keys(req.query).includes('lon')) {
