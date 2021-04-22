@@ -32,7 +32,7 @@ function loadCurrentCity() {
         },
         error => {
             console.log(error)
-            loadWeatherDataByName("Moscow", onCurrentCityLoaded, errorDuringLoadingCurrent)
+            loadWeatherDataByName("Saint Petersburg", onCurrentCityLoaded, errorDuringLoadingCurrent)
         }, {timeout: 5000}
     )
 }
