@@ -1,0 +1,265 @@
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+html,
+body {
+    min-height: 100%;
+    width: 100%;
+}
+
+ul,
+li {
+    list-style: none;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+button {
+    cursor: pointer;
+}
+
+header {
+    display: grid;
+    grid-template-columns: 3fr 1fr 3fr;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 2em;
+}
+.headerButton {
+    text-align: center;
+    padding: 0.5em;
+    font-size: 80%;
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    background: #5c5b5b;
+    transition: 0.2s;
+    margin-left: 2%;
+}
+
+.headerButton:hover {
+    background: #89898b;
+}
+
+.headerButton:active {
+    background: #050505;
+    box-shadow: 0 3vmax #000000 inset;
+    color: white;
+}
+
+.headerWeather {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-content: space-between;
+}
+.headerInfo {
+    display: flex;
+    padding: 1em 2em 1em 2em;
+    flex-direction: column;
+    justify-items: center;
+    margin-bottom: 2em;
+}
+
+.headerList {
+    display: flex;
+    padding: 1em 2em 1em 2em;
+    flex-direction: column;
+    justify-items: center;
+    margin-bottom: 2em;
+}
+.favWeather {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-content: space-between;
+}
+
+.headerInf {
+    display: flex;
+    align-items: center;
+}
+.headerImg {
+    align-self: flex-start;
+    max-width: 8em;
+    max-height: 8em;
+    margin-right: 2em;
+}
+.headerTemp {
+    font-size: 5em;
+}
+.headerCity {
+    margin-bottom: 1em;
+}
+
+.headerList li {
+    display: flex;
+    background-color: #BEC8CD;
+    padding: 7px;
+    justify-content: space-between;
+    margin: 0.25em 0 0.25em 0;
+}
+
+.favorites {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-left: 2em;
+}
+.favForm {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 2em;
+}
+.favInput {
+    background-color: #BEC8CD;
+    padding: 0.8em;
+    margin-right: 1em;
+    border-radius: 5px;
+}
+.addButton {
+    font-size: 1em;
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 50%;
+}
+
+.favList {
+    display: flex;
+    flex-direction: column;
+    padding: 1em 2em 1em 2em;
+    justify-items: center;
+}
+.favWeatherTitle {
+    display: flex;
+    align-items: center;
+}
+.favCity {
+    min-width: 0;
+    margin-right: 0.5em;
+    font-size: 1.3em;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.favTemperature {
+    margin-right: 0.5em;
+    font-size: 1.3em;
+}
+.favImg {
+    max-height: 2em;
+    margin-right: auto;
+}
+.favButton {
+    font-size: 1em;
+    min-width: 1.5em;
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 50%;
+}
+.favWeatherType li{
+    display: flex;
+    background-color: #BEC8CD;
+    padding: 7px;
+    justify-content: space-between;
+    margin: 0.25em 0 0.25em;
+}
+
+.loader{
+    display: flex;
+    align-items: center;
+    padding: 2em;
+}
+
+.loader img{
+    height: 50px;
+    margin-right: 20px;
+}
+
+.loaderCity{
+    display: flex;
+    align-items: center;
+}
+
+.loaderCity img{
+    max-height: 2em;
+    margin-right: auto;
+}
+
+@media screen and (max-width: 695px) {
+    h1 {
+        font-size: 1.6em;
+    }
+
+    h2 {
+        font-size: 1.2em;
+    }
+
+    p {
+        font-size: 0.8em;
+    }
+
+    header {
+        margin-left: 2em;
+    }
+
+
+    .refreshGeo {
+        display: none;
+    }
+
+    .favorites {
+        grid-template-columns: 1fr;
+    }
+
+    .favForm{
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    .headerWeather {
+        grid-template-columns: 1fr;
+    }
+    .headerList {
+        margin-bottom: 0;
+    }
+    .favWeather {
+        grid-template-columns: 1fr;
+        margin: 0 1em 0 1em;
+    }
+
+    .favInput{
+        width: 100%;
+    }
+
+    .headerImg {
+        max-width: 4em;
+        max-height: 4em;
+        margin-right: 0.8em;
+    }
+    .headerTemp {
+        font-size: 3em;
+    }
+    .headerCity {
+        margin-bottom: 1em;
+    }
+
+    .favList {
+        padding: 0.3em 0.6em 0.3em 0.6em;
+    }
+    .favCity {
+        font-size: 1.1em;
+    }
+    .favTemperature {
+        font-size: 1.1em;
+    }
+    .favImg {
+        max-height: 1em;
+        margin-right: auto;
+    }
+}
+
