@@ -1,9 +1,10 @@
+require('dotenv').config({ path: '.env' });
 const express = require('express');
 const https = require('https');
 const MongoClient = require('mongodb').MongoClient;
 const app = express();
-const port = 3000;
-const apiKey = "2bbb7474e93316b574e7da337783076d";
+const port = process.env.PORT || '3000';
+const apiKey = process.env.APIKEY
 var db = null;
 
 MongoClient.connect('mongodb://localhost:27017/', (err, client) => {
