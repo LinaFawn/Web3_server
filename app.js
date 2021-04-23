@@ -8,6 +8,8 @@ const apiKey = process.env.APIKEY;
 var db = null;
 
 MongoClient.connect('mongodb://localhost:27017/', (err, client) => {
+    useUnifiedTopology: true;
+
     if (err) throw err;
 
     db = client.db('db');
