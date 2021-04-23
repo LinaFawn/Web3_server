@@ -1,16 +1,16 @@
-const express = require('express')
-const https = require('https')
-const MongoClient = require('mongodb').MongoClient
-const app = express()
-const port = 8080
-const apiKey = "2bbb7474e93316b574e7da337783076d"
+const express = require('express');
+const https = require('https');
+const MongoClient = require('mongodb').MongoClient;
+const app = express();
+const port = 3000;
+const apiKey = "2bbb7474e93316b574e7da337783076d";
 var db = null;
 
 MongoClient.connect('mongodb://localhost:27017/', (err, client) => {
-    if (err) throw err
+    if (err) throw err;
 
     db = client.db('db');
-    app.listen(port)
+    app.listen(port);
 })
 
 app.use('/', express.static(__dirname + '/'));
@@ -21,11 +21,11 @@ app.get('/', (req, res) => {
 
 app.get('/weather/coordinates', (req, res) => {
     if (!Object.keys(req.query).includes('lat') || !Object.keys(req.query).includes('lon')) {
-        res.status(400).send("No coordinates keys in query")
+        res.status(400).send("No coordinates keys in query");
         return
     }
 
-    loadWeatherDataByPosToRes(req.query.lat, req.query.lon, res)
+    loadWeatherDataByPosToRes(req.query.lat, req.query.lon, res);
 })
 
 app.get('/weather/city', (req, res) => {
