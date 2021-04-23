@@ -6,23 +6,16 @@ const server = express();
 const port = process.env.PORT || '3000';
 const apiKey = process.env.APIKEY;
 var db = null;
+const asyncHandler = require('express-async-handler')
+const loaderS = require(__dirname + '/loader.js')
 
-/*MongoClient.connect(
-    'mongodb://localhost:27017/db',  // строка подключения
-    {
-        useUnifiedTopology: true,  // установка опций
-        useNewUrlParser: true
-    },
-    function(err, database) {  // callback
-        if (err) {
-            return console.log(err);
-        }
-        // Ссылка на бд
-        db = database;
-        server.listen(port);
-    });
 
- */
+server.use('/', express.static(__dirname + '/'));
+
+server.get('/', (req, res) => {
+    res.sendFile(__dirname + '/index2.html');
+});
+
 
 MongoClient.connect('mongodb://localhost:27017/', (err, client) => {
     useUnifiedTopology: true;
@@ -33,46 +26,38 @@ MongoClient.connect('mongodb://localhost:27017/', (err, client) => {
     server.listen(port);
 })
 
-server.use('/', express.static(__dirname + '/'));
 
-server.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html');
-});
-
-
-
-server.get('/weather/coordinates', (req, res) => {
+server.get('/weather/coordinates', asyncHandler(async function (req, res) {
     if (!Object.keys(req.query).includes('lat') || !Object.keys(req.query).includes('lon')) {
         res.status(400).send("No coordinates keys in query");
-        return
     }
+    await loaderS.loadWeatherDataByPosToRes(req.query.lat, req.query.lon, res)
 
-    loadWeatherDataByPosToRes(req.query.lat, req.query.lon, res);
-})
+}));
 
-server.get('/weather/city', (req, res) => {
+server.get('/weather/city', asyncHandler(async function (req, res) {
     if (!Object.keys(req.query).includes('name')) {
-        res.status(400).send("No city key in query")
-        return
+        res.status(400).send("No city key in query");
     }
+    await loaderS.loadWeatherDataByNameToRes(req.query.name, res);
 
-    loadWeatherDataByNameToRes(req.query.name, res)
-})
+}));
 
-server.get('/favorites', (req, res) => {
+server.get('/favorites', asyncHandler(async function (req, res){
     db.collection('favorites').find().toArray(function (error, result) {
         res.status(200).send(result);
     });
-})
+}));
 
-server.post('/favorites', (req, res) => {
+
+
+server.post('/favorites', asyncHandler(async function (req, res) {
     if (!Object.keys(req.query).includes('name')) {
         res.status(400).send("No city key in query")
-        return
     }
 
     let url = `https://api.openweathermap.org/data/2.5/weather?q=${req.query.name}&appid=${apiKey}`
-    loadDataByUrl(
+    await loaderS.loadDataByUrl(
         url,
         data => {
             db.collection('favorites').find({id: data.id}).toArray((error, result) => {
@@ -88,16 +73,16 @@ server.post('/favorites', (req, res) => {
             res.status(code).send(error)
         }
     )
-})
 
-server.delete('/favorites', (req, res) => {
+}));
+
+server.delete('/favorites', asyncHandler(async function (req, res) {
     if (!Object.keys(req.query).includes('name')) {
         res.status(400).send("No city key in query")
-        return
     }
 
     let url = `https://api.openweathermap.org/data/2.5/weather?q=${req.query.name}&appid=${apiKey}`
-    loadDataByUrl(
+    await loaderS.loadDataByUrl(
         url,
         data => {
             db.collection('favorites').remove({ id: data.id }, function (err) {
@@ -112,46 +97,6 @@ server.delete('/favorites', (req, res) => {
             res.status(code).send(error);
         }
     )
-})
+}))
 
-function loadWeatherDataByNameToRes(name, res) {
-    let url = `https://api.openweathermap.org/data/2.5/weather?q=${name}&appid=${apiKey}`
-    loadDataByUrlToRes(url, res)
-}
 
-function loadWeatherDataByPosToRes(lat, lon, res) {
-    let url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`
-    loadDataByUrlToRes(url, res)
-}
-
-function loadDataByUrlToRes(url, res) {
-    loadDataByUrl(
-        url,
-        data => {
-            res.status(200).send(data)
-        },
-        (code, error) => {
-            res.status(code).send(error)
-        }
-    )
-}
-
-function loadDataByUrl(url, callback, errorCallback) {
-    https.get(url, (response) => {
-        if (response.statusCode === 404) {
-            errorCallback(404, "Not found")
-            return
-        }
-
-        let data = ''
-        response.on('data', (chunk) => {
-            data += chunk
-        });
-        response.on('end', () => {
-            data = JSON.parse(data)
-            callback(data)
-        })
-    }).on("error", (err) => {
-        errorCallback(404, "Not found")
-    })
-}
