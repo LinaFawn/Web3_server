@@ -4,7 +4,7 @@ const https = require('https');
 const MongoClient = require('mongodb').MongoClient;
 const app = express();
 const port = process.env.PORT || '3000';
-const apiKey = process.env.APIKEY
+const apiKey = process.env.APIKEY;
 var db = null;
 
 MongoClient.connect('mongodb://localhost:27017/', (err, client) => {
