@@ -2,7 +2,7 @@ require('dotenv').config({ path: '.env' });
 const express = require('express');
 const https = require('https');
 const MongoClient = require('mongodb').MongoClient;
-const app = express();
+const server = express();
 const port = process.env.PORT || '3000';
 const apiKey = process.env.APIKEY;
 var db = null;
@@ -13,16 +13,16 @@ MongoClient.connect('mongodb://localhost:27017/', (err, client) => {
     if (err) throw err;
 
     db = client.db('db');
-    app.listen(port);
+    server.listen(port);
 })
 
-app.use('/', express.static(__dirname + '/'));
+server.use('/', express.static(__dirname + '/'));
 
-app.get('/', (req, res) => {
+server.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
-app.get('/weather/coordinates', (req, res) => {
+server.get('/weather/coordinates', (req, res) => {
     if (!Object.keys(req.query).includes('lat') || !Object.keys(req.query).includes('lon')) {
         res.status(400).send("No coordinates keys in query");
         return
@@ -31,7 +31,7 @@ app.get('/weather/coordinates', (req, res) => {
     loadWeatherDataByPosToRes(req.query.lat, req.query.lon, res);
 })
 
-app.get('/weather/city', (req, res) => {
+server.get('/weather/city', (req, res) => {
     if (!Object.keys(req.query).includes('name')) {
         res.status(400).send("No city key in query")
         return
@@ -40,13 +40,13 @@ app.get('/weather/city', (req, res) => {
     loadWeatherDataByNameToRes(req.query.name, res)
 })
 
-app.get('/favorites', (req, res) => {
+server.get('/favorites', (req, res) => {
     db.collection('favorites').find().toArray(function (error, result) {
         res.status(200).send(result);
     });
 })
 
-app.post('/favorites', (req, res) => {
+server.post('/favorites', (req, res) => {
     if (!Object.keys(req.query).includes('name')) {
         res.status(400).send("No city key in query")
         return
@@ -71,7 +71,7 @@ app.post('/favorites', (req, res) => {
     )
 })
 
-app.delete('/favorites', (req, res) => {
+server.delete('/favorites', (req, res) => {
     if (!Object.keys(req.query).includes('name')) {
         res.status(400).send("No city key in query")
         return
