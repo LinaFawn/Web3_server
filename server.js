@@ -7,7 +7,7 @@ const port = process.env.PORT || '3000';
 const apiKey = process.env.APIKEY;
 var db = null;
 
-MongoClient.connect(
+/*MongoClient.connect(
     'mongodb://localhost:27017/db',  // строка подключения
     {
         useUnifiedTopology: true,  // установка опций
@@ -22,7 +22,9 @@ MongoClient.connect(
         server.listen(port);
     });
 
-/*MongoClient.connect('mongodb://localhost:27017/', (err, client) => {
+ */
+
+MongoClient.connect('mongodb://localhost:27017/', (err, client) => {
     useUnifiedTopology: true;
 
     if (err) throw err;
@@ -37,7 +39,7 @@ server.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
- */
+
 
 server.get('/weather/coordinates', (req, res) => {
     if (!Object.keys(req.query).includes('lat') || !Object.keys(req.query).includes('lon')) {
