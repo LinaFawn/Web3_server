@@ -1,37 +1,20 @@
-const express = require('express');
-const https = require('https');
-const MongoClient = require('mongodb').MongoClient;
-const app = express();
-const port = process.env.PORT || 5000;
-const apiKey = "2bbb7474e93316b574e7da337783076d";
+require('dotenv').config({ path: '.env' });
+const express = require('express')
+const https = require('https')
+const MongoClient = require('mongodb').MongoClient
+const app = express()
+const port = process.env.PORT;
+const apiKey = process.env.APIKEY
 var db = null;
 const path = require('path');
+const axios = require('axios')
 
 
-app.use(express.static('public'));
-
-app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname + '/index.html'));
-});
+app.use('/', express.static(__dirname + '/'));
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
-
-
-MongoClient.connect('mongodb://localhost:27017/', (err, client) => {
-    if (err) throw err
-
-    db = client.db('db');
-    app.listen(port)
-})
-/* app.use('/', express.static(__dirname + '/'));
-
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html');
-});
-
- */
 
 app.get('/weather/coordinates', (req, res) => {
     if (!Object.keys(req.query).includes('lat') || !Object.keys(req.query).includes('lon')) {
@@ -104,6 +87,13 @@ app.delete('/favorites', (req, res) => {
             res.status(code).send(error);
         }
     )
+})
+
+MongoClient.connect('mongodb://localhost:27017/', (err, client) => {
+    if (err) throw err
+
+    db = client.db('db');
+    app.listen(port)
 })
 
 function loadWeatherDataByNameToRes(name, res) {
