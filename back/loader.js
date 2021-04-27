@@ -2,12 +2,12 @@ const https = require('https');
 const apiKey = process.env.APIKEY;
 
 module.exports = {
-    loadWeatherDataByPosToRes: async function(lat, lon, res){
+    loadWeatherByPos: async function(lat, lon, res){
         let url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`
         await loadDataByUrlToRes(url, res);
     },
 
-    loadWeatherDataByNameToRes: async function(name, res){
+    loadWeatherByName: async function(name, res){
         let url = `https://api.openweathermap.org/data/2.5/weather?q=${name}&appid=${apiKey}`
         await loadDataByUrlToRes(url, res)
     },

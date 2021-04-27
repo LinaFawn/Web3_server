@@ -7,13 +7,12 @@ const port = process.env.PORT || '3000';
 const apiKey = process.env.APIKEY;
 var db = null;
 const asyncHandler = require('express-async-handler')
-const loaderS = require(__dirname + '/loader.js')
-
+const loaderS = require('./back/loader.js')
 
 server.use('/', express.static(__dirname + '/'));
 
 server.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index2.html');
+    res.sendFile(__dirname + '/index.html');
 });
 
 
@@ -31,7 +30,7 @@ server.get('/weather/coordinates', asyncHandler(async function (req, res) {
     if (!Object.keys(req.query).includes('lat') || !Object.keys(req.query).includes('lon')) {
         res.status(400).send("No coordinates keys in query");
     }
-    await loaderS.loadWeatherDataByPosToRes(req.query.lat, req.query.lon, res)
+    await loaderS.loadWeatherByPos(req.query.lat, req.query.lon, res)
 
 }));
 
@@ -39,7 +38,7 @@ server.get('/weather/city', asyncHandler(async function (req, res) {
     if (!Object.keys(req.query).includes('name')) {
         res.status(400).send("No city key in query");
     }
-    await loaderS.loadWeatherDataByNameToRes(req.query.name, res);
+    await loaderS.loadWeatherByName(req.query.name, res);
 
 }));
 
