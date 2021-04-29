@@ -1,21 +1,13 @@
 require('dotenv').config({ path: '.env' });
 const express = require('express');
-const https = require('https');
-const MongoClient = require('mongodb').MongoClient;
 const server = express();
-const port = process.env.PORT || '3000';
-const apiKey = process.env.APIKEY;
-var db = null;
-const asyncHandler = require('express-async-handler')
-
-
-
 
 server.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
 require('./routs')(server)
+
 /*
 MongoClient.connect('mongodb://localhost:27017/', (err, client) => {
     useUnifiedTopology: true;

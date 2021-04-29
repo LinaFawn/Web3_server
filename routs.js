@@ -5,8 +5,7 @@ const MongoClient = require('mongodb').MongoClient;
 const port = process.env.PORT || '3000';
 const apiKey = process.env.APIKEY;
 var db = null;
-var express = require('express');
-var router = express.Router();
+const url =process.env.URL
 
 module.exports = function (server) {
     server.get('/weather/coordinates', asyncHandler(async function (req, res) {
@@ -81,7 +80,7 @@ module.exports = function (server) {
         )
     }))
 
-    MongoClient.connect('mongodb://localhost:27017/', (err, client) => {
+    MongoClient.connect(url, (err, client) => {
         useUnifiedTopology: true;
 
         if (err) throw err;
