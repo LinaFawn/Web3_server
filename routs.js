@@ -12,7 +12,7 @@ module.exports = function (server) {
         if (!Object.keys(req.query).includes('lat') || !Object.keys(req.query).includes('lon')) {
             res.status(400).send("No coordinates keys in query");
         }
-        await loaderS.loadWeatherDataByPosToRes(req.query.lat, req.query.lon, res)
+        await loaderS.loadWeatherByPos(req.query.lat, req.query.lon, res)
 
     }));
 
@@ -20,7 +20,7 @@ module.exports = function (server) {
         if (!Object.keys(req.query).includes('name')) {
             res.status(400).send("No city key in query");
         }
-        await loaderS.loadWeatherDataByNameToRes(req.query.name, res);
+        await loaderS.loadWeatherByName(req.query.name, res);
 
     }));
 
