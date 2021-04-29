@@ -1,3 +1,4 @@
+
 function onCurrentCityLoaded(weather) {
     console.log(weather)
     let curCel = document.getElementsByClassName("headerTemp")[0]

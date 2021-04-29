@@ -7,15 +7,16 @@ const port = process.env.PORT || '3000';
 const apiKey = process.env.APIKEY;
 var db = null;
 const asyncHandler = require('express-async-handler')
-const loaderS = require('./back/loader.js')
 
-server.use('/', express.static(__dirname + '/'));
+
+
 
 server.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
-
+require('./routs')(server)
+/*
 MongoClient.connect('mongodb://localhost:27017/', (err, client) => {
     useUnifiedTopology: true;
 
@@ -23,14 +24,13 @@ MongoClient.connect('mongodb://localhost:27017/', (err, client) => {
 
     db = client.db('db');
     server.listen(port);
-})
-
+});
 
 server.get('/weather/coordinates', asyncHandler(async function (req, res) {
     if (!Object.keys(req.query).includes('lat') || !Object.keys(req.query).includes('lon')) {
         res.status(400).send("No coordinates keys in query");
     }
-    await loaderS.loadWeatherByPos(req.query.lat, req.query.lon, res)
+    await loaderS.loadWeatherDataByPosToRes(req.query.lat, req.query.lon, res)
 
 }));
 
@@ -38,7 +38,7 @@ server.get('/weather/city', asyncHandler(async function (req, res) {
     if (!Object.keys(req.query).includes('name')) {
         res.status(400).send("No city key in query");
     }
-    await loaderS.loadWeatherByName(req.query.name, res);
+    await loaderS.loadWeatherDataByNameToRes(req.query.name, res);
 
 }));
 
@@ -97,5 +97,4 @@ server.delete('/favorites', asyncHandler(async function (req, res) {
         }
     )
 }))
-
-
+ */
